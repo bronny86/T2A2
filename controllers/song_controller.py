@@ -60,8 +60,11 @@ def delete_song(song_id):
 @songs_bp.route("/<int:song_id>", methods = ['PUT', 'PATCH'])
 @jwt_required()
 def update_song(song_id):
+    body_data = song_schema.load(request.get_json(), partial=True)
+
     stmt = db.select(Song).filter_by(id=song_id)
     song = db.session.scalar(stmt)
+
     if song:
         body_data = request.get_json()
         song.song_name = body_data['song_name']

@@ -36,17 +36,19 @@ def seed_tables():
             username='Dan Watt',
             email='wattsonpresents@gmail.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
+            
         ),
         User(
             username='Percy Colthurst',
             email= 'percy@postpercy.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
+    
         ),
         User(
             username ='Minky Binky',
             email='minky@kitten.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
-
+            
         ),
         User(
             username= 'Bootsy Watt',
