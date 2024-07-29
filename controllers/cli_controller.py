@@ -6,6 +6,7 @@ from init import db, bcrypt
 from models.user import User
 from models.playlist import Playlist
 from models.song import Song
+from models.songlist import Songlist
 
 
 db_commands = Blueprint("db", __name__)
@@ -25,29 +26,30 @@ def seed_tables():
     # create a list of User instances
     users = [
         User(
+            username="admin",
             email="admin@email.com",
             password=bcrypt.generate_password_hash("123456").decode("utf-8"),
             is_admin=True
         ),
 
         User(
-            name='Dan Watt',
+            username='Dan Watt',
             email='wattsonpresents@gmail.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
         ),
         User(
-            name='Percy Colthurst',
+            username='Percy Colthurst',
             email= 'percy@postpercy.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
         ),
         User(
-            name ='Minky Binky',
+            username ='Minky Binky',
             email='minky@kitten.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
 
         ),
         User(
-            name= 'Bootsy Watt',
+            username= 'Bootsy Watt',
             email= 'bootsy@kittylinks.com',
             password= bcrypt.generate_password_hash('123456').decode('utf-8')
         )
@@ -98,134 +100,149 @@ def seed_tables():
 
     db.session.add_all(playlists)
 
-
     songs =[
         Song(
-            title ='TKO',
+            song_name ='TKO',
             artist = 'Le Tigre',
             format = 'CD',
             bpm = '139',
             key = 'E',
+            user = users[1],
         ),
 
         Song(
-            title = 'Sabotage',
+            song_name = 'Sabotage',
             artist = 'Beastie Boys',
             format = 'vinyl',
             bpm = '168',
             key = 'F',
+            user = users[2],
     
         ),
         Song(
-            title = 'I Love Livin In The City',
+            song_name = 'I Love Livin In The City',
             artist = 'Fear',
             format = 'cd',
             bpm = '105',
             key = 'F',
+            user = users[3],
         ),
         Song(
-            title = 'Blue Monday',
+            song_name = 'Blue Monday',
             artist = 'New Order',
             format = 'vinyl',
             bpm = '130',
             key = 'C',
+            user = users[4],
         
         ),
         Song(
-            title = 'Killing in the Name of',
+            song_name = 'Killing in the Name of',
             artist = 'Rage Against The Machine',
             format = 'iTunes',
             bpm = '88',
             key = 'G',
+            user = users[4],
             
         ),
         Song(
-            title = 'Last Night',
+            song_name = 'Last Night',
             artist = 'The Strokes',
             format = 'USB',
             bpm = '104',
             key = 'C',
+            user = users[1],
             
         ),
         Song(
-            title ='Love Cats',
+            song_name ='Love Cats',
             artist = 'The Cure',
             format = 'vinyl',
             bpm = '92',
             key = 'A',
+            user = users[2]
             
         ),
         Song(
-            title = 'Spiderwebs',
+            song_name = 'Spiderwebs',
             artist = 'No Doubt',
             format = 'iTunes',
             bpm = '143',
             key = 'B',
+            user = users[3],
            
         ),
         Song(
-            title = 'Head Like A Hole',
+            song_name = 'Head Like A Hole',
             artist = 'Nine Inch Nails',
             format = 'USB',
             bpm = '115',
             key = 'G',
+            user = users[4],
         
         ),
         Song(
-            title = 'Epic',
+            song_name = 'Epic',
             artist = 'Faith No More',
             format = 'CD',
             bpm = '87',
             key = 'G',
+            user = users[3],
         
         ),
         Song(
-            title = 'Steal My Sunshine',
+            song_name = 'Steal My Sunshine',
             artist = 'LEN',
             format = 'iTunes',
             bpm = '96',
             key = 'E',
+            user = users[1],
             
         ),
         Song(
-            title = 'Semi-Charmed Kinda Life',
+            song_name = 'Semi-Charmed Kinda Life',
             artist = 'Third Eye Blind',
             format = 'CD',
             bpm = '102',
             key = 'G',
+            user = users[2],
         
         ),
         Song(
-            title = 'Boys Wanna Be Her',
+            song_name = 'Boys Wanna Be Her',
             artist = 'Peaches',
             format = 'CD',
             bpm = '139',
             key = 'G',
+            user = users[3],
             
         ),
         Song(
-            title = 'Volcano Girls',
+            song_name = 'Volcano Girls',
             artist = 'Veruca Salt',
             format = 'vinyl',
             bpm = '131',
             key = 'D',
+            user = users[4],
            
 
         ),
         Song(
-            title = 'Psycho Killer',
+            song_name = 'Psycho Killer',
             artist = 'Talking Heads',
             format = 'vinyl',
             bpm = '123',
             key = 'C',
+            user = users[3],
             
         ),
         Song(
-            title = 'Edge of Seventeen',
+            song_name = 'Edge of Seventeen',
             artist = 'Stevie Nicks',
             format = 'vinyl',
             bpm = '111',
             key = 'G',
+            user = users[1],
            
         )
         

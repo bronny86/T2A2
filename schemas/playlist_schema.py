@@ -1,12 +1,12 @@
-from init import db, ma
+from init import ma
 
 from marshmallow import fields
 
 class PlaylistSchema(ma.Schema):
-        user = fields.Nested('UserSchema', only=["id", "name", "email"])
+        user = fields.Nested('UserSchema', only=["id", "username", "email"])
 
         class Meta:
-            fields = ("id", "title", "created", "vibe", "user")
+            fields = ("id", "title", "created", "vibe", "username")
             ordered = True
 
 playlist_schema = PlaylistSchema()

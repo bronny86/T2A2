@@ -1,20 +1,24 @@
-from init import db, ma
-from marshmallow import fields
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
+from init import db
 
+Base = declarative_base()
 
 class Song(db.Model):
-    # name of the table
     __tablename__ = "songs"
 
-    # attributes of the table
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    artist =db.Column(db.String)
-    format = db.Column(db.String)
-    bpm = db.Column(db.String)
-    key = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    song_name = db.Column(db.String, nullable=False)
+    artist = db.Column(db.String, nullable=False)
+    format = db.Column(db.String, nullable=False)
+    bpm = db.Column(db.Integer, nullable=False)
+    key = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.Integer, ForeignKey('users.id'))
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user = relationship('User', back_populates='songs')
+    songlists = relationship('SongList', back_populates='song')
 
-    # connecting to foregin key in playlist
-    user = db.relationship('User', back_populates='song')
+    # Deferred relationship definition
+from models.songlist import Songlist
+Song.songlists = relationship('Songlist', back_populates='song')

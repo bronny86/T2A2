@@ -6,7 +6,8 @@ from psycopg2 import errorcodes
 from flask_jwt_extended import create_access_token
 
 from init import bcrypt, db
-from models.user import User, user_schema
+from models.user import User
+from schemas.user_schema import UserSchema, user_schema, users_schema
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -18,7 +19,7 @@ def register_user():
         body_data = request.get_json()
         # create an instance of the user model
         user = User(
-            name=body_data.get("name"),
+            username=body_data.get("username"),
             email=body_data.get("email")
             )
         # extract the password from the body

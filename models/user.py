@@ -1,35 +1,21 @@
-from init import db, ma
-from marshmallow import fields
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
+from init import db
 
+Base = declarative_base()
 
 class User(db.Model):
-    # name of the table
     __tablename__ = "users"
 
-    # attributes of the table
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-    # connecting to foregin key in playlist
-    playlists = db.relationship('Playlist', back_populates="user")
-    songs = db.relationship('Song', back_populates="user")
-
-class UserSchema(ma.Schema):
-
-# is playlistS because one user can have many playlists
-    playlists = fields.List(fields.Nested('PlaylistSchema', exclude=["user"]))
-
-    songs = fields.List(fields.Nested('SongSchema', exclude=["user"]))
-
-    class Meta:
-        fields = ("id", "name", "email", "password", "is_admin", "playlists", "songs")
+    songs = relationship('Song', back_populates='user')
+    playlists = relationship('Playlist', back_populates='user')
 
 
-# to handle a single user object
-user_schema = UserSchema(exclude=["password"])
-
-# to handle a list of user objects
-users_schema = UserSchema(many=True, exclude=["password"])
+    
