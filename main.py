@@ -7,6 +7,8 @@ from init import db, ma, bcrypt, jwt
 def create_app():
     app = Flask(__name__)
 
+    app.json.sort_keys = False
+
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://library_dev:123456@localhost:5432/library_db"
 
     app.config["JWT_SECRET_KEY"] = "secret"

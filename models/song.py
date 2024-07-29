@@ -20,5 +20,5 @@ class Song(db.Model):
     songlists = relationship('SongList', back_populates='song')
 
     # Deferred relationship definition
-from models.songlist import Songlist
+from models.songlist import Songlist  
 Song.songlists = relationship('Songlist', back_populates='song')

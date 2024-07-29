@@ -9,7 +9,6 @@ class Songlist(db.Model):
     __tablename__ = "songlists"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    album = db.Column(db.String, nullable=False)
     song_id = db.Column(db.Integer, ForeignKey('songs.id'))
     playlist_id = db.Column(db.Integer, ForeignKey('playlists.id'))
 
@@ -17,5 +16,5 @@ class Songlist(db.Model):
     playlist = relationship('Playlist', back_populates='songlists')
 
 # Deferred relationship definition
-from models.playlist import Playlist
+from models.playlist import Playlist  # noqa: E402
 Songlist.playlist = relationship('Playlist', back_populates='songlists')
