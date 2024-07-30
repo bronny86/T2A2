@@ -9,9 +9,8 @@ def create_app():
 
     app.json.sort_keys = False
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://library_dev:123456@localhost:5432/library_db"
-
-    app.config["JWT_SECRET_KEY"] = "secret"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+    app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
 
     db.init_app(app)
     ma.init_app(app)
