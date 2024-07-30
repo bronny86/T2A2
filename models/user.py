@@ -16,6 +16,3 @@ class User(db.Model):
 
     songs = relationship('Song', back_populates='user')
     playlists = relationship('Playlist', back_populates='user')
-
-
-    

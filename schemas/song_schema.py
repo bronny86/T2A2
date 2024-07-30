@@ -6,7 +6,7 @@ class SongSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=["id", "username", "email"])
 
     class Meta:
-         fields = ("id", "song_name", "artist", "format", "bpm", "key", "username" )
+         fields = ("id", "song_name", "artist", "format", "bpm", "key", "user" )
 
          ordered = True
 
