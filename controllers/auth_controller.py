@@ -1,9 +1,10 @@
 from datetime import timedelta
 
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify, abort
 from sqlalchemy.exc import IntegrityError
 from psycopg2 import errorcodes
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from functools import wraps
 
 from init import bcrypt, db
 from models.user import User
@@ -14,6 +15,14 @@ auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 # /auth/register - POST - register a new user
 @auth_bp.route("/register", methods=["POST"])
 def register_user():
+
+    # The request data loaded in a user_schema 
+    user_fields = user_schema.load(request.json)
+    # Query the User table for the first user with the given email address
+    user = User.query.filter_by(email=user_fields["email"]).first()
+    # Return an abort message to inform the user is already registered. 
+    if user:
+        return abort(400, description="Email already registered")\
 
     try:
         # get the data from the payload body of the request
@@ -63,3 +72,19 @@ def login_user():
     else:
         # respond back with an error message
         return {"error": "Invalid email or password"}, 401
+
+# Utilize a decorator in other controllers for checking if a user is an admin to reduce repetitive code
+def admin_required(fn):
+     # Use the functools.wraps decorator to preserve the original function name and signature
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        # Get the user id invoking get_jwt_identity
+        user_id = get_jwt_identity()
+        # Retrieves a user object from the database based on the provided user ID
+        user = User.query.get(user_id)
+        # Stop the request if the user is not an admin
+        if not user.admin:
+            abort(401, description="Unauthorized user")
+        return fn(*args, **kwargs)
+    # Return the wrapped function
+    return wrapper
