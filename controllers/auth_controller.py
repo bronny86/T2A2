@@ -83,7 +83,7 @@ def admin_required(fn):
         # Retrieves a user object from the database based on the provided user ID
         user = User.query.get(user_id)
         # Stop the request if the user is not an admin
-        if not user.admin:
+        if not user.is_admin:
             abort(401, description="Unauthorized user")
         return fn(*args, **kwargs)
     # Return the wrapped function

@@ -29,4 +29,7 @@ def create_app():
     from controllers.song_controller import songs_bp
     app.register_blueprint(songs_bp)
 
+    from controllers.user_controller import users_bp
+    app.register_blueprint(users_bp)
+
     return app
