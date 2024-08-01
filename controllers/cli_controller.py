@@ -7,6 +7,7 @@ from models.user import User
 from models.playlist import Playlist
 from models.song import Song
 from models.songlist import Songlist
+from sqlalchemy import text
 
 
 db_commands = Blueprint("db", __name__)
@@ -18,7 +19,10 @@ def create_tables():
 
 @db_commands.cli.command("drop")
 def drop_tables():
-    db.drop_all()
+    db.session.execute(text("DROP TABLE IF EXISTS songlist CASCADE"))
+    db.session.execute(text("DROP TABLE IF EXISTS songs CASCADE"))
+    db.session.execute(text("DROP TABLE IF EXISTS playlists CASCADE"))
+    db.session.execute(text("DROP TABLE IF EXISTS users CASCADE"))
     print("Tables dropped")
 
 @db_commands.cli.command("seed")
@@ -27,32 +31,32 @@ def seed_tables():
     users = [
         User(
             username="admin",
-            email="admin@email.com",
+            email="admin@boss.com",
             password=bcrypt.generate_password_hash("123456").decode("utf-8"),
             is_admin=True
         ),
 
         User(
             username='Dan Watt',
-            email='wattsonpresents@gmail.com',
+            email='wattsonpresents1@gmail.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
             
         ),
         User(
             username='Percy Colthurst',
-            email= 'percy@postpercy.com',
+            email= 'percy1@postpercy.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
     
         ),
         User(
             username ='Minky Binky',
-            email='minky@kitten.com',
+            email='minky1@kitten.com',
             password=bcrypt.generate_password_hash('123456').decode('utf-8')
             
         ),
         User(
             username= 'Bootsy Watt',
-            email= 'bootsy@kittylinks.com',
+            email= 'bootsy1@kittylinks.com',
             password= bcrypt.generate_password_hash('123456').decode('utf-8')
         )
         
