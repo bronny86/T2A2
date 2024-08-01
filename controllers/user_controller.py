@@ -42,40 +42,6 @@ def get_user(id):
     return jsonify(result)
 
 
-# The POST routes endpoint for creating a new user (admin required)
-@users_bp.route("/", methods=["POST"])
-# Require a valid JWT token to access the endpoint
-@jwt_required()
-# Check whether the user has admin permissions to access the endpoint
-@admin_required
-def create_user():
-    # Load user data from the request
-    user_fields = user_schema.load(request.json)
-    # Try to extract the required fields and catch KeyError if any field is missing
-    try:
-        username = user_fields["username"]
-        email = user_fields["email"]
-        password = user_fields["password"]
-        is_admin = user_fields["is_admin"]
-    except KeyError:
-        return abort(400, description="Missing data for required fields")
-    # Check if a user with the same email already exists in the database
-    existing_user = User.query.filter_by(email=email).first()
-    if existing_user:
-        return abort(409, description="User with that email already exists")
-    # Create a new User object, and set its attributes
-    new_user = User()
-    new_user.username = username
-    new_user.email = email
-    new_user.password = bcrypt.generate_password_hash(password).decode("utf-8")
-    new_user.is_admin = is_admin
-    # Add to the database and commit
-    db.session.add(new_user)
-    db.session.commit()
-    # Return the user in the response
-    return jsonify(user_schema.dump(new_user))
-
-
 # The PUT routes endpoint granting users permission to update their user fields (except admin field). 
 @users_bp.route("/<int:id>/", methods=["PUT"])
 # Require a valid JWT token to access the endpoint
