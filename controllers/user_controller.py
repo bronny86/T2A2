@@ -89,20 +89,17 @@ def update_user(id):
     if user.id != id:
         return abort(401, description="You are not authorized to update this user")
     # Load user data from the request
-    user_fields = user_schema.load(request.json)
+    body_data = request.get_json()
     # Try to extract the required fields and catch KeyError if any field is missing
-    try:
-        username = user_fields["username"]
-        email = user_fields["email"]
-        password = user_fields["password"]
-    except KeyError:
-        return abort(400, description="Missing data for required fields")
+    stmt = db.select(User).filter_by(id=user_id)
+    user = db.session.scalar(stmt)
+    if user:
     # Set the user attributes
-    user.username = username
-    user.email = email
-    user.password = bcrypt.generate_password_hash(password).decode("utf-8")
+        user.username = body_data.get("username") or user.username
+        user.email = body_data.get("email") or user.email
+        user.password = bcrypt.generate_password_hash("password").decode("utf-8")
     # User not allowed to set admin to True
-    user.admin = False
+    user.is_admin = False
     # Add to the database and commit
     db.session.commit()
     # Return the updated user in the response
