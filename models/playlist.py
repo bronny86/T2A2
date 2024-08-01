@@ -15,4 +15,5 @@ class Playlist(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
 
     user = relationship('User', back_populates='playlists')
+    songs = relationship('Song', back_populates='playlist')
     songlists = relationship('Songlist', back_populates='playlist')

@@ -19,10 +19,12 @@ def create_tables():
 
 @db_commands.cli.command("drop")
 def drop_tables():
+    db.drop_all()
     db.session.execute(text("DROP TABLE IF EXISTS songlist CASCADE"))
     db.session.execute(text("DROP TABLE IF EXISTS songs CASCADE"))
     db.session.execute(text("DROP TABLE IF EXISTS playlists CASCADE"))
     db.session.execute(text("DROP TABLE IF EXISTS users CASCADE"))
+    
     print("Tables dropped")
 
 @db_commands.cli.command("seed")
@@ -61,8 +63,21 @@ def seed_tables():
         )
         
     ]
-
     db.session.add_all(users)
+    # Iterate over the list of users
+    for user in users:
+        # Check if the user already exists
+        existing_user = User.query.filter_by(email=user.email).first()
+
+        if not existing_user:
+            # Add the new user to the session
+            db.session.add(user)
+            # Commit the session
+            db.session.commit()
+        else:
+            print(f"User with email {user.email} already exists.")
+
+   
 
     playlists = [
         Playlist(
@@ -114,6 +129,7 @@ def seed_tables():
             bpm = '139',
             key = 'E',
             user = users[1],
+            playlist = playlists[1],
         ),
 
         Song(
@@ -123,6 +139,7 @@ def seed_tables():
             bpm = '168',
             key = 'F',
             user = users[2],
+            playlist = playlists[1],
     
         ),
         Song(
@@ -132,6 +149,7 @@ def seed_tables():
             bpm = '105',
             key = 'F',
             user = users[3],
+            playlist = playlists[2],
         ),
         Song(
             song_name = 'Blue Monday',
@@ -140,6 +158,7 @@ def seed_tables():
             bpm = '130',
             key = 'C',
             user = users[4],
+            playlist = playlists[3],
         
         ),
         Song(
@@ -149,6 +168,7 @@ def seed_tables():
             bpm = '88',
             key = 'G',
             user = users[4],
+            playlist = playlists[4],
             
         ),
         Song(
@@ -158,6 +178,7 @@ def seed_tables():
             bpm = '104',
             key = 'C',
             user = users[1],
+            playlist= playlists[5],
             
         ),
         Song(
@@ -166,7 +187,8 @@ def seed_tables():
             format = 'vinyl',
             bpm = '92',
             key = 'A',
-            user = users[2]
+            user = users[2],
+            playlist = playlists[5],
             
         ),
         Song(
@@ -176,6 +198,7 @@ def seed_tables():
             bpm = '143',
             key = 'B',
             user = users[3],
+            playlist = playlists[1],
            
         ),
         Song(
@@ -185,6 +208,7 @@ def seed_tables():
             bpm = '115',
             key = 'G',
             user = users[4],
+            playlist = playlists[2],
         
         ),
         Song(
@@ -194,6 +218,7 @@ def seed_tables():
             bpm = '87',
             key = 'G',
             user = users[3],
+            playlist = playlists[3],
         
         ),
         Song(
@@ -203,6 +228,7 @@ def seed_tables():
             bpm = '96',
             key = 'E',
             user = users[1],
+            playlist=playlists[4],
             
         ),
         Song(
@@ -212,6 +238,7 @@ def seed_tables():
             bpm = '102',
             key = 'G',
             user = users[2],
+            playlist = playlists[5],
         
         ),
         Song(
@@ -221,6 +248,7 @@ def seed_tables():
             bpm = '139',
             key = 'G',
             user = users[3],
+            playlist = playlists[5],
             
         ),
         Song(
@@ -230,6 +258,7 @@ def seed_tables():
             bpm = '131',
             key = 'D',
             user = users[4],
+            playlist = playlists[1],
            
 
         ),
@@ -240,6 +269,7 @@ def seed_tables():
             bpm = '123',
             key = 'C',
             user = users[3],
+            playlist = playlists[2],
             
         ),
         Song(
@@ -249,7 +279,18 @@ def seed_tables():
             bpm = '111',
             key = 'G',
             user = users[1],
+            playlist = playlists[3],
            
+        ),
+        Song(
+            song_name = 'Dancing With Myself',
+            artist = 'Billy Idol',
+            format = 'vinyl',
+            bpm = '176',
+            key = 'E',
+            user = users[2],
+            playlist = playlists[3],
+            
         )
         
     ]

@@ -15,8 +15,10 @@ class Song(db.Model):
     bpm = db.Column(db.Integer, nullable=False)
     key = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, ForeignKey('users.id'))
+    playlist_id = db.Column(db.Integer, ForeignKey('playlists.id'))
 
     user = relationship('User', back_populates='songs')
+    playlist = relationship('Playlist', back_populates='songs')
     songlists = relationship('SongList', back_populates='song')
 
     # Deferred relationship definition
