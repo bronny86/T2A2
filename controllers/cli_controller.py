@@ -6,7 +6,6 @@ from init import db, bcrypt
 from models.user import User
 from models.playlist import Playlist
 from models.song import Song
-from models.songlist import Songlist
 from sqlalchemy import text
 
 

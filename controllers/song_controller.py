@@ -3,8 +3,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from init import db
 from models.song import Song
-from models.user import User
-from schemas.song_schema import SongSchema, song_schema, songs_schema
+from schemas.song_schema import song_schema, songs_schema
 
 songs_bp = Blueprint("songs", __name__, url_prefix="/songs")
 

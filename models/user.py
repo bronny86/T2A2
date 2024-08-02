@@ -1,5 +1,4 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.orm import relationship
 from init import db
 
